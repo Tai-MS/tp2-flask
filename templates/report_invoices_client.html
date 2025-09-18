@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice reports per client</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper p-4">
+
+  <h2>Invoice reports per client</h2>
+
+  <form method="POST" class="mb-4">
+    <div class="form-group">
+      <label for="client_id">Client ID:</label>
+      <input type="text" id="client_id" name="client_id" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+  </form>
+
+  {% if tickets %}
+    <h4>Found invoices</h4>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Ticket ID</th>
+          <th>Date</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in tickets %}
+        <tr>
+          <td>{{ t.id_ticket }}</td>
+          <td>{{ t.date }}</td>
+          <td>${{ "%.2f"|format(t.total) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% elif request.method == "POST" %}
+    <div class="alert alert-warning">Invoices not found for this client.</div>
+  {% endif %}
+
+</div>
+</body>
+</html>

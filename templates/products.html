@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage products</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+  <div class="content-wrapper p-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="mb-4 px-4 py-2 rounded-lg 
+                    {% if category == 'danger' %} bg-red-100 text-red-700 
+                    {% elif category == 'success' %} bg-green-100 text-green-700 
+                    {% else %} bg-gray-100 text-gray-700 {% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <section class="content">
+      <div class="container-fluid">
+        <h1>Manage products</h1>
+        <form method="post">
+          <input type="hidden">
+          <div class="form-group">
+            <label>ID</label>
+            <input type="text" class="form-control" name="id">
+          </div>
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="title">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input type="text" class="form-control" name="desc">
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" class="form-control" step="0.01" name="price">
+          </div>
+          <div class="form-group">
+            <label>Stock</label>
+            <input type="number" class="form-control" name="stock">
+          </div>
+          <button class="btn btn-primary">Create</button>
+          <button class="btn btn-warning" name="_method" value="PUT">Update</button>
+          
+        </form>
+
+        <hr>
+        <h2>Products list</h2>
+        <table class="table table-striped">
+          <thead>
+    <tr>
+      <th>ID</th><th>Title</th><th>Description</th><th>Price</th><th>Stock</th>
+    </tr>
+  </thead>
+          {% for product in products %}
+  <tbody>
+      <tr>
+        <td>{{ product.id_product }}</td>
+        <td>{{ product.title }}</td>
+        <td>{{ product.description }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.stock }}</td>
+        <td>
+        <form method="post" style="display:inline;">
+          <input type="hidden" name="_method" value="DELETE">
+          <input type="hidden" name="id" value="{{ product.id_product }}">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </td>
+      </tr>
+    {% else %}
+      <tr>
+        <td colspan="8">No products found.</td>
+      </tr>
+    {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+</div>
+</body>
+</html>
